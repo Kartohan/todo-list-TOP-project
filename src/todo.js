@@ -52,8 +52,8 @@ class todo {
         return this.des;
     }
 
-    get getdata() {
-        return this.data;
+    get getdate() {
+        return this.date;
     }
     
     get getpriority() {
