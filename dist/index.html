@@ -20,7 +20,6 @@
             </form>
         </div>
         <div class="todo">
-            <button class="add-todo-button">+</button>
             <div class="todo-inputs">
                 <div class="todo-inputs-content">
                     <span class="close-button">&times;</span>
@@ -53,20 +52,8 @@
             </div>
             <h1 class="project-title">Project</h1>
             <div class="todo-list">
-                <div class="task">
-                    <div class="todo-text">
-                        <h2>Todo title</h2>
-                        <p>Todo description</p>
-                        <p>12.02.22 12:22</p>
-                    </div>
-                    <div class="todo-buttons">
-                        <button class="check">Mark complete</button>
-                        <button class="delete">Delete</button>
-                        <button class="change">Change</button>
-                        <button class="priority">Priority: High</button>
-                    </div>
-                </div>
             </div>
+            <button class="add-todo-button">+</button>
         </div>
     </div>
     <div class="footer">
@@ -86,6 +73,20 @@
                 <button class="priority">Priority: High</button>
             </div>
         </div>
+    </template>
+    <template class="change-template">
+        <form action="" class="change-form">
+            <div class="task">
+                <div class="todo-text">
+                    <input type="text" name="change-title" id="change-title">
+                    <input type="text" name="change-des" id="change-des">
+                    <input type="datetime-local" name="change-date" id="change-date">
+                </div>
+                <div class="change-button">
+                    <button type="button" class="change-btn">Add changes</button>
+                </div>
+            </div>
+        </form>
     </template>
 </body>
 </html>

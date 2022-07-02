@@ -14,6 +14,7 @@ class todo {
         this.priority = priority;
         this.complete = false;
         this.id = Date.now().toString();
+        this.change = false;
     }
 }
 

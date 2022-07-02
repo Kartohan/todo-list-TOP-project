@@ -1,4 +1,4 @@
-import style from './style.css';
+import './style.css';
 import { project, todo } from './projects.js';
 
 const projectListContainer = document.querySelector('.project-list');
@@ -13,9 +13,10 @@ const todoAddDateInput = document.getElementById('date');
 const todoAddPriorityInput = document.getElementById('priority');
 const todoTemplate = document.querySelector('.task-template');
 const projectTitle = document.querySelector('.project-title');
+const changeTemplate = document.querySelector('.change-template');
 
 const projList = new Array();
-let selectedListId = '';
+let selectedListId = Date.now().toString();
 
 todoAddForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -45,27 +46,91 @@ addProjectForm.addEventListener('submit', e => {
 
 projectListContainer.addEventListener('click', e => {
     if (e.target.tagName.toLowerCase() === 'li') {
-        selectedListId = e.target.dataset.id;
+        selectedListId = e.target.dataset.projectid;
     }
     let selectedProj = projList.find(proj => proj.id === selectedListId)
     render();
     renderTodo(selectedProj);
 })
 
+todoListContaier.addEventListener('click', e => {
+    let selectedProj = projList.find(proj => proj.id === selectedListId);
+    if (e.target.className === 'delete') {
+        let proj = selectedProj.todolist.filter(todo => todo.id !== e.path[2].dataset.id);
+        selectedProj.todolist = proj;
+        renderTodo(selectedProj);
+    } else if (e.target.className === 'priority') {
+        let selectedTodo = selectedProj.todolist.find(todo => todo.id === e.path[2].dataset.id);
+        switch (selectedTodo.priority) {
+            case 'High': selectedTodo.priority = 'Low';
+            break;
+            case 'Medium': selectedTodo.priority = 'High';
+            break;
+            case 'Low': selectedTodo.priority = 'Medium';
+            break;
+        }
+        renderTodo(selectedProj);
+    } else if (e.target.className === 'check') {
+        let selectedTodo = selectedProj.todolist.find(todo => todo.id === e.path[2].dataset.id);
+        if (selectedTodo.complete === false) {
+            selectedTodo.complete = true;
+        } else {
+            selectedTodo.complete = false;
+        }
+        renderTodo(selectedProj);
+    } else if (e.target.className === 'change') {
+        let selectedTodo = selectedProj.todolist.find(todo => todo.id === e.path[2].dataset.id);
+        selectedTodo.change = true;
+        renderTodo(selectedProj);
+    } else if (e.target.className === 'change-btn') {
+        let selectedTodo = selectedProj.todolist.find(todo => todo.id === e.path[2].dataset.id);
+        const selectedTask = document.querySelector(`[data-id='${selectedTodo.id}']`);
+        const changeTitle = selectedTask.querySelector('#change-title');
+        const changeDes = selectedTask.querySelector('#change-des');
+        const changeDate = selectedTask.querySelector('#change-date');
+        selectedTodo.name = changeTitle.value;
+        selectedTodo.des = changeDes.value;
+        selectedTodo.date = changeDate.value;
+        selectedTodo.change = false;
+        renderTodo(selectedProj);
+    }
+})
+
+
 function renderTodo(selectedList) {
     clearElement(todoListContaier);
     projectTitle.innerText = selectedList.name;
     selectedList.todolist.forEach(todo => {
+        if (todo.change === false) {
         const todoEl = document.importNode(todoTemplate.content, true);
+        const container = todoEl.querySelector('.task');
         const todoTitle = todoEl.querySelector('.todo-title');
         const todoDes = todoEl.querySelector('.todo-des');
         const todoDate = todoEl.querySelector('.todo-date');
         const todoPriorityBtn = todoEl.querySelector('.priority');
+        const todoCheckBtn = todoEl.querySelector('.check');
         todoTitle.innerText = todo.name;
         todoDes.innerText = todo.des;
         todoDate.innerText = todo.date;
+        container.dataset.id = todo.id;
         todoPriorityBtn.innerText = `Priority: ${todo.priority}`;
+        if (todo.complete === true) {
+            container.classList.add('done');
+            todoCheckBtn.innerText = 'Mark uncomplete';
+        }
         todoListContaier.append(todoEl);
+    } else if (todo.change === true) {
+        const changeEl = document.importNode(changeTemplate.content, true);
+        const inputTitle = changeEl.getElementById('change-title');
+        const inputDes = changeEl.getElementById('change-des');
+        const inputDate = changeEl.getElementById('change-date');
+        const container = changeEl.querySelector('.task');
+        container.dataset.id = todo.id;
+        inputTitle.value = todo.name;
+        inputDes.value = todo.des;
+        inputDate.value = todo.date;
+        todoListContaier.append(changeEl);
+    }
     })
 }
 
@@ -90,7 +155,7 @@ function render() {
 
 function createLi(id, text) {
     const li = document.createElement('li');
-    li.dataset.id = id;
+    li.dataset.projectid = id;
     li.innerText = text;
     return li;
 }
@@ -102,8 +167,9 @@ function clearElement(element) {
 }
 
 projList.push(new project('default'));
-projList[0].todolist.push(new todo('My first Todo', 'Description', '22.02.2022 21:22', 'High'));
+projList[0].todolist.push(new todo('My first Todo', 'Description', new Date(), 'High'));
 render();
+renderTodo(projList.find(list => list.id === selectedListId))
 
 
 const modal = document.querySelector(".todo-inputs");

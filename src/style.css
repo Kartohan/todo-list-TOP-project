@@ -23,6 +23,9 @@
     flex-direction: column;
     gap: 10px;
 }
+.change-button {
+    display: flex;
+}
 .todo-buttons button {
     padding: 3px;
     border: 1px solid gray;
@@ -31,6 +34,11 @@
 .todo {
     width: 80%;
     display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+.todo-list {
+    display: flex;
     flex-direction: column;
     gap: 10px;
 }
