@@ -1,0 +1,101 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.main-container {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    min-height: 80vh;
+}
+
+.done {
+    background: #80808029;
+    color: gray;
+}
+.task {
+    display: flex;
+    justify-content: space-between;
+}
+.todo-buttons, .todo-text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.todo-buttons button {
+    padding: 3px;
+    border: 1px solid gray;
+    border-radius: 7px;
+}
+.todo {
+    width: 80%;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+.add-todo-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 2em;
+}
+.nav {
+    padding: 0px 8px;
+}
+.footer {
+    text-align: center;
+    padding: 50px;
+}
+.page-title {
+    text-align: center;
+    padding: 10px;
+}
+.project-title  {
+    text-align: center;
+    padding: 10px;
+}
+
+.todo-inputs {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+.todo-inputs-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 1rem 1.5rem;
+    width: 24rem;
+    border-radius: 0.5rem;
+} 
+.close-button {
+    float: right;
+    width: 1.5rem;
+    line-height: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    background-color: lightgray;
+}
+
+.close-button:hover {
+    background-color: darkgray;
+}
+.show-modal {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1.0);
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+.active-list {
+    font-weight: bold;
+}
